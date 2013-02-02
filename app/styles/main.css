@@ -1,0 +1,63 @@
+.chessboard-wrapper {
+  overflow: hidden;
+  /*width: 320px;*/
+  /*height: 320px;*/
+}
+
+body,
+.chessboard {
+  padding: 0;
+  margin: 0;
+}
+
+.chessboard {
+  position: relative;
+  width: 480px;
+  height: 480px;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  /*-webkit-transform: scale(0.6667);*/
+  /*-webkit-transform-origin: 0 0;*/
+}
+
+.piece,
+.field {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 60px;
+  height: 60px;
+
+  background-repeat: no-repeat;
+}
+
+.field.light {
+  background-color: #f0d9b5;
+}
+
+.field.dark {
+  background-color: #b58863;
+}
+
+.piece {
+  /*-webkit-transition: -webkit-transform 0.5s;*/
+  -webkit-transition: top 0.5s, left 0.5s;
+  -moz-transition: top 0.5s, left 0.5s;
+  -ms-transition: top 0.5s, left 0.5s;
+  -o-transition: top 0.5s, left 0.5s;
+  transition: top 0.5s, left 0.5s;
+}
+
+.piece.pawn.white { background-image: url(../images/wp.png); }
+.piece.knight.white { background-image: url(../images/wn.png); }
+.piece.bishop.white { background-image: url(../images/wb.png); }
+.piece.rook.white { background-image: url(../images/wr.png);}
+.piece.queen.white { background-image: url(../images/wq.png); }
+.piece.king.white { background-image: url(../images/wk.png); }
+
+.piece.pawn.black { background-image: url(../images/bp.png); }
+.piece.knight.black { background-image: url(../images/bn.png); }
+.piece.bishop.black { background-image: url(../images/bb.png); }
+.piece.rook.black { background-image: url(../images/br.png);}
+.piece.queen.black { background-image: url(../images/bq.png); }
+.piece.king.black { background-image: url(../images/bk.png); }

@@ -1,0 +1,17 @@
+.DS_Store
+*.swp
+*.swo
+*~.nib
+*.uml~
+*~lock
+
+temp
+dist
+components
+
+*.pbxuser
+*.perspective
+*.perspectivev3
+*.htaccess
+*.project
+*.settings
