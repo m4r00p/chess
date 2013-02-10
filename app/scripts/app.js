@@ -1,20 +1,6 @@
-define([], function() {
+define(['browser'], function(browser) {
   'use strict';
 
-   /**
-   * Function.prototype.bind
-   */
-  if (!Function.prototype.bind) {
-    Function.prototype.bind = function(ctx) {
-      var that = this;
-      var args = Array.prototype.slice.call(arguments, 1);
-
-      return function() {
-        return that.apply(ctx, args.concat(
-          Array.prototype.slice.call(arguments)));
-      };
-    };
-  }
 
   var Chessboard = function () {
   };
@@ -34,27 +20,86 @@ define([], function() {
   };
 
   Chessboard.prototype.addEventListeners = function () {
-    this.root.addEventListener('click', this.onClick.bind(this), false);
+    $(this.root).on('click', this.onClick.bind(this));
   };
 
   Chessboard.prototype.onClick = function (event) {
     var style, target = event.target;
+
     if (this.selected) {
       style = this.selected.style;
-
-      style.backgroundColor = 'rgba(0, 0, 0, 0)';
-      //style.webkitTransform = 'translate(' + target.style.left + ',' +target.style.top+ ')';
-      style.top = target.style.top;
-      style.left = target.style.left;
-
+      style.backgroundColor = '';
+      this.move(this.selected, target);
       this.selected = null;
     } else if (target.className.indexOf('piece') != -1) {
       this.selected = target
-      this.selected.style.backgroundColor = 'rgba(0, 255, 0, 0.3)';
+      this.selected.style.backgroundColor = 'rgb(0, 255, 0)';
     }
 
     event.preventDefault();
     return false;
+  };
+
+  Chessboard.prototype.place = function (element, position) {
+    var style = element.style;
+
+    element.x = position.x;
+    element.y = position.y;
+
+    if (browser.hasTransition) {
+      style.webkitTransform = 'matrix3d(' +
+        '1,0,0,0,' +
+        '0,1,0,0,' +
+        '0,0,1,0,' +
+        position.x + ',' + position.y+ ',0,1)';
+      } else {
+      style.left = position.x + 'px';
+      style.top = position.y + 'px';
+    }
+  };
+
+  Chessboard.prototype.move = function (element, position) {
+    var style = element.style;
+
+    var speed = 480 / 500; // 480px entire chessboard per 2s
+    var dx = position.x - element.x;
+    var dy = position.y - element.y;
+    var distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+    var duration = distance / speed;
+
+    if (browser.hasTransition) {
+      style.webkitTransform = 'matrix3d(' +
+        '1,0,0,0,' +
+        '0,1,0,0,' +
+        '0,0,1,0,' +
+        position.x + ',' + position.y+ ',0,1)';
+
+      style[browser.transitionPropertyName + 'Duration'] = duration + 'ms';
+
+      element.x = position.x;
+      element.y = position.y;
+    } else {
+      var dt = 0;
+      var start = Date.now();
+      var loop = function () {
+        dt = Date.now() - start;
+
+        style.top = element.y + (dy * dt/duration) + 'px';
+        style.left = element.x + (dx * dt/duration) + 'px';
+
+        if (dt < duration) {
+          requestAnimationFrame(loop);
+        } else {
+          style.top = position.y + 'px';
+          style.left = position.x + 'px';
+
+          element.x = position.x;
+          element.y = position.y;
+        }
+      };
+
+      loop();
+    }
   };
 
   Chessboard.prototype.createBoard = function () {
@@ -65,6 +110,9 @@ define([], function() {
         field = document.createElement('div');
         field.className = 'field ' + ((j + i) & 1 ? 'light' : 'dark');
         style = field.style;
+
+        field.y = i * size;
+        field.x = j * size;
 
         style.top = i * size + 'px';
         style.left = j * size + 'px';
@@ -93,10 +141,7 @@ define([], function() {
 
       piece.className = 'piece ' + (i < 16 ? 'black' : 'white') + ' ' + entry.kind;
 
-      style.top = entry.y + 'px';
-      style.left = entry.x + 'px';
-
-      //style.webkitTransform = 'translate(' + entry.x + 'px,' + entry.y+ 'px)';
+      this.place(piece, entry);
 
       fragment.appendChild(piece);
     }
@@ -140,5 +185,5 @@ define([], function() {
   };
 
   var board = new Chessboard();
-  board.render(document.body.querySelector('.chessboard-wrapper'));
+  board.render($('.chessboard-wrapper')[0]);
 });
