@@ -36,10 +36,12 @@ body,
 }
 
 .field.dark {
+  /*background-color: red;*/
   background-color: #b58863;
 }
 
 .piece {
+  -webkit-backface-visibility: hidden;
   -webkit-transition: -webkit-transform 0.2s linear;
   -moz-transition: -moz-transform 0.2s linear;
   -ms-transition: -ms-transform 0.2s linear;
@@ -47,16 +49,16 @@ body,
   transition: transform 0.2s linear;
 }
 
-.piece.pawn.white { background-image: url(../images/wp.png); }
-.piece.knight.white { background-image: url(../images/wn.png); }
-.piece.bishop.white { background-image: url(../images/wb.png); }
-.piece.rook.white { background-image: url(../images/wr.png);}
-.piece.queen.white { background-image: url(../images/wq.png); }
-.piece.king.white { background-image: url(../images/wk.png); }
+.pawn-white { background-image: url(../images/wp.png); }
+.knight-white { background-image: url(../images/wn.png); }
+.bishop-white { background-image: url(../images/wb.png); }
+.rook-white { background-image: url(../images/wr.png);}
+.queen-white { background-image: url(../images/wq.png); }
+.king-white { background-image: url(../images/wk.png); }
 
-.piece.pawn.black { background-image: url(../images/bp.png); }
-.piece.knight.black { background-image: url(../images/bn.png); }
-.piece.bishop.black { background-image: url(../images/bb.png); }
-.piece.rook.black { background-image: url(../images/br.png);}
-.piece.queen.black { background-image: url(../images/bq.png); }
-.piece.king.black { background-image: url(../images/bk.png); }
+.pawn-black { background-image: url(../images/bp.png); }
+.knight-black { background-image: url(../images/bn.png); }
+.bishop-black { background-image: url(../images/bb.png); }
+.rook-black { background-image: url(../images/br.png);}
+.queen-black { background-image: url(../images/bq.png); }
+.king-black { background-image: url(../images/bk.png); }

@@ -47,11 +47,10 @@ define([], function() {
    * @private
    * @return {string|undefined} Return property name or undefined if transition is not supported.
    */
-  function detectTransitionPropertyName() {
+  function detectPropertyName(property) {
     var name = undefined;
     var prefixes = 'Webkit Moz O ms'.split(' ');  
-    var property = 'transition';
-    var ucProproperty = 'Transition';
+    var ucProproperty = property.charAt(0).toUpperCase() + property.slice(1);
     var properties = (property + ' ' + prefixes.join(ucProproperty + ' ') + ucProproperty).split(' ');
     var element = d.createElement('asdf');
 
@@ -69,13 +68,31 @@ define([], function() {
     return name;
   };
 
+  function hyphenated(value) {
+    return value.replace(/([A-Z])/g, function(str, m1) {
+      return '-' + m1.toLowerCase();
+    }).replace(/^ms-/,'-ms-');
+  };
+
   /**
    * Transition property name.
    *
    * @private
    * @type {string|undefined}
    */
-  var transitionPropertyName = detectTransitionPropertyName();
+  var transitionPropertyName = detectPropertyName('transition');
+
+  /**
+   * Transform property name.
+   *
+   * @private
+   * @type {string|undefined}
+   */
+
+  var transformPropertyName = detectPropertyName('transform');
+  if (transformPropertyName) {
+    transformPropertyName = hyphenated(transformPropertyName);
+  }
 
   /**
    * Version of IE.
@@ -106,6 +123,13 @@ define([], function() {
      * @type {string}
      */
     transitionPropertyName: transitionPropertyName, 
+
+    /**
+     * Expose transform property name outside the scope.
+     *
+     * @type {string}
+     */
+    transformPropertyName: transformPropertyName, 
 
     /**
      * Contain the name of transition event.

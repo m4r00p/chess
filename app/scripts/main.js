@@ -7,7 +7,8 @@ require.config({
   },
 
   paths: {
-    app: 'app.js?'+(new Date()),
+    chessboard: 'chessboard',
+    app: 'app',
     jquery: 'vendor/jquery.min'
   }
 });

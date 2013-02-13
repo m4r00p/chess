@@ -1,6 +1,23 @@
 define(['browser'], function(browser) {
   'use strict';
 
+  var map = {
+    'P': 'pawn',
+    'N': 'knight',
+    'B': 'bishop',
+    'R': 'rook',
+    'Q': 'queen',
+    'K': 'king'
+  };
+
+  var inversedMap = {
+    'pawn': '',
+    'knight': 'N',
+    'bishop': 'B',
+    'rook': 'R',
+    'queen': 'Q',
+    'king': 'K'
+  };
 
   var Chessboard = function () {
   };
@@ -33,7 +50,7 @@ define(['browser'], function(browser) {
       this.selected = null;
     } else if (target.className.indexOf('piece') != -1) {
       this.selected = target
-      this.selected.style.backgroundColor = 'rgb(0, 255, 0)';
+      this.selected.style.backgroundColor = 'green';
     }
 
     event.preventDefault();
@@ -47,11 +64,8 @@ define(['browser'], function(browser) {
     element.y = position.y;
 
     if (browser.hasTransition) {
-      style.webkitTransform = 'matrix3d(' +
-        '1,0,0,0,' +
-        '0,1,0,0,' +
-        '0,0,1,0,' +
-        position.x + ',' + position.y+ ',0,1)';
+      style[browser.transformPropertyName] = 'translate3d(' + position.x + 'px,' + position.y+ 'px, 0)';
+      //style['-webkit-transform'] = 'translate3d(' + position.x + 'px,' + position.y+ 'px, 0)';
       } else {
       style.left = position.x + 'px';
       style.top = position.y + 'px';
@@ -68,12 +82,8 @@ define(['browser'], function(browser) {
     var duration = distance / speed;
 
     if (browser.hasTransition) {
-      style.webkitTransform = 'matrix3d(' +
-        '1,0,0,0,' +
-        '0,1,0,0,' +
-        '0,0,1,0,' +
-        position.x + ',' + position.y+ ',0,1)';
 
+      style[browser.transformPropertyName] = 'translate3d(' + position.x + 'px,' + position.y+ 'px, 0)';
       style[browser.transitionPropertyName + 'Duration'] = duration + 'ms';
 
       element.x = position.x;
@@ -124,6 +134,10 @@ define(['browser'], function(browser) {
     this.root.appendChild(fragment);
   };
 
+
+  Chessboard.prototype.createPieces = function () {
+  },
+
   Chessboard.prototype.createPieces = function () {
     var pieces = [
       'Ra8', 'Nb8', 'Bc8', 'Qd8', 'Ke8', 'Bf8', 'Ng8', 'Rh8',
@@ -137,9 +151,9 @@ define(['browser'], function(browser) {
       piece = document.createElement('div');
       style = piece.style;
 
-      entry = this.parseEntry(pieces[i]);
+      entry = this.parseEntry(pieces[i], true);
 
-      piece.className = 'piece ' + (i < 16 ? 'black' : 'white') + ' ' + entry.kind;
+      piece.className = 'piece' + ' ' + entry.kind + (i < 16 ? '-black' : '-white');
 
       this.place(piece, entry);
 
@@ -149,19 +163,24 @@ define(['browser'], function(browser) {
     this.root.appendChild(fragment);
   };
 
-  Chessboard.prototype.parseEntry = function (entry) {
+  Chessboard.prototype.flip90 = function () {
+    console.log('Flip');
+    var $pieces = $('.piece');
+    for (var i = 0, leni = $pieces.length, piece; i < leni; ++i) {
+      piece = $pieces[i]; 
+
+      this.place(piece, {
+        x: piece.y,
+        y: piece.x
+      });
+    }
+  };
+
+  Chessboard.prototype.parseEntry = function (entry, flipped) {
     var x, y, kind, split;
 
     var size = 60;
-    var values = 'abcdefgh';
-    var map = {
-      'P': 'pawn',
-      'N': 'knight',
-      'B': 'bishop',
-      'R': 'rook',
-      'Q': 'queen',
-      'K': 'king'
-    };
+    var values = !flipped ? 'abcdefgh' : 'hgfedcba';
 
     split = entry.split(''); 
 
@@ -176,14 +195,15 @@ define(['browser'], function(browser) {
     }
 
     y -= 1;
+    y = !flipped ? y : 7 - y;
 
     return {
+      entry: entry,
       x: x * size,
       y: y * size,
       kind: kind
     };
   };
 
-  var board = new Chessboard();
-  board.render($('.chessboard-wrapper')[0]);
+  return Chessboard;
 });

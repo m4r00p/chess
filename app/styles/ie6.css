@@ -1,0 +1,14 @@
+
+.pawn-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wp.png',sizingMethod='scale'); }
+.knight-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wn.png',sizingMethod='scale'); }
+.bishop-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wb.png',sizingMethod='scale'); }
+.rook-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wr.png',sizingMethod='scale'); }
+.queen-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wq.png',sizingMethod='scale'); }
+.king-white { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/wk.png',sizingMethod='scale'); }
+
+.pawn-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bp.png',sizingMethod='scale'); }
+.knight-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bn.png',sizingMethod='scale'); }
+.bishop-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bb.png',sizingMethod='scale'); }
+.rook-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/br.png',sizingMethod='scale'); }
+.queen-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bq.png',sizingMethod='scale'); }
+.king-black { background-image: none; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/bk.png',sizingMethod='scale'); }
